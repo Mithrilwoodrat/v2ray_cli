@@ -52,8 +52,8 @@ os.environ["http_proxy"] = ""
 
 def chk_node_ok():
     try:
-        http_proxy = "http://127.0.0.1:1081"
-        https_proxy = "https://127.0.0.1:1081"
+        http_proxy = "http://127.0.0.1:8001"
+        https_proxy = "https://127.0.0.1:8001"
         proxyDict = {
             "http": http_proxy,
             "https": https_proxy,
