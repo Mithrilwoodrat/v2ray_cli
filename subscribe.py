@@ -11,7 +11,8 @@ class Subscribe(object):
         self.__source = {}  # 订阅的各节点
         self.__node = {}    # 订阅的各节点名称
         self.__json_template_pathname = json_template_pathname
-        self.__json_conf_pathname = "./config.json"
+        # self.__json_conf_pathname = "./config.json"
+        self.__json_conf_pathname = "/usr/local/etc/v2ray/config.json"
         self.__nodeid = 0
 
     def update(self):
@@ -119,5 +120,4 @@ class Subscribe(object):
             print("config.json write error")
             return
         print('using', sub)
-        os.system("killall v2ray")
-        os.system("/root/v2ray/v2ray ./config.json &")
+        os.system("systemctl restart v2ray.service")

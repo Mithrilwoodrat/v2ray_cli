@@ -59,8 +59,8 @@ def chk_node_ok():
             "https": https_proxy,
         }
 
-        res = requests.get("http://ip4.me/", proxies=proxyDict)
-        #res = requests.get("https://www.youtube.com/", proxies=proxyDict)
+        #res = requests.get("http://ip4.me/", proxies=proxyDict)
+        res = requests.get("https://zapper.fi/en/quests", proxies=proxyDict)
         if res.status_code==200:
             # pos1 = res.content.find(r'Monospace" size=+3')
             # if pos1!=-1:
@@ -114,6 +114,8 @@ def start():
             logging.info("find succ node, wait next time update")
 
             go_next()
+        except KeyboardInterrupt:
+            sys.exit(0)
         except:
             strexct = "except {}".format(traceback.format_exc())
             logging.info(strexct)

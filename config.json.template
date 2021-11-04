@@ -24,13 +24,13 @@
                 "ip": [
                     "geoip:cn"
                 ],
-                "outboundTag": "direct"
+                "outboundTag": "proxy"
             },
             {
                 "domain": [
                     "geosite:cn"
                 ],
-                "outboundTag": "direct",
+                "outboundTag": "proxy",
                 "type": "field"
             }
         ]
@@ -51,7 +51,7 @@
     },
     "inbounds": [
         {
-            "port": 1081,
+            "port": 8001,
             "protocol": "http",
             "listen": "127.0.0.1",
             "settings": {
