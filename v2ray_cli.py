@@ -102,7 +102,8 @@ def start():
             cfg.write(cfg_file)
     else:
         url = cfg["subscribe"]["url"]
-    sub = Subscribe(url, json_template_pathname)
+    start_id = int(cfg["subscribe"]["start_id"])
+    sub = Subscribe(url, json_template_pathname, start_id=start_id)
     while 1:
         try:
             sub.update()

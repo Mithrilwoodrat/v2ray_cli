@@ -6,14 +6,14 @@ import ast
 
 
 class Subscribe(object):
-    def __init__(self, url, json_template_pathname):
+    def __init__(self, url, json_template_pathname, start_id=0):
         self.__url = url    # 订阅链接
         self.__source = {}  # 订阅的各节点
         self.__node = {}    # 订阅的各节点名称
         self.__json_template_pathname = json_template_pathname
         # self.__json_conf_pathname = "./config.json"
         self.__json_conf_pathname = "/usr/local/etc/v2ray/config.json"
-        self.__nodeid = 0
+        self.__nodeid = start_id
 
     def update(self):
         try:
@@ -56,6 +56,43 @@ class Subscribe(object):
                 break
             except KeyError as e:
                 print("%s: %s" % ("Out Of Node Range", e))
+
+    def manul_update(self):
+        try:
+            ret = requests.get(self.__url, headers={'user-agent': 'v2ray/1.0'})
+            if ret.status_code != 200:
+                print("Requests Error")
+                return
+        except ConnectionError:
+            print("Connection Error")
+            return
+
+        all_subs = base64.b64decode(ret.text).decode().strip().split("\n")
+
+        for item in all_subs:
+            subs = []
+            subs.append(item.split("://"))
+
+            item_protocol = subs[-1][0]
+            item_source = subs[-1][1]
+
+            if item_protocol == "vmess":
+                try:
+                    item_source_bytes = base64.b64decode(item_source)
+                    item_node = json.loads(item_source_bytes.decode("utf-8"))
+                    self.__source[item_node["ps"]] = item_node
+                except ValueError as e:
+                    print("ValueError: %s" % e)
+                    pass
+            else:
+                print("%s not support" % item_protocol)
+
+        try:
+            self.show()
+            num = input("Please Enter Node Num:")
+            self.sub2conf(self.__node[str(num)], "vmess")
+        except KeyError as e:
+            print("%s: %s" % ("Out Of Node Range", e))
 
     def show(self):
         num = 0
