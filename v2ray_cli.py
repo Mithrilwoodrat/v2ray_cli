@@ -121,5 +121,18 @@ def start():
             strexct = "except {}".format(traceback.format_exc())
             logging.info(strexct)
 
+def main():
+    cfg = configparser.ConfigParser()
+    cfg.read(cfg_pathname, encoding='UTF-8')
+    if cfg["subscribe"]["url"] == "":
+        url = input("Please Enter The Subscription Address: ")
+        cfg["subscribe"] = {"url": url}
+        with open(cfg_pathname, 'w') as cfg_file:
+            cfg.write(cfg_file)
+    else:
+        url = cfg["subscribe"]["url"]
+    sub = Subscribe(url, json_template_pathname)
+    sub.manul_update()
+
 if __name__=="__main__":
     start()
